@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Evidence.Data;
+using Evidence.Data.Interfaces;
+using Evidence.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Evidence
@@ -25,8 +27,10 @@ namespace Evidence
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<EvidenceDbContext>(options =>
+            services.AddDbContext<EvidenceContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("EvidenceDB")));
+            services.AddTransient<IEmpolyeeRepository, EmployeeRepository>();
+            services.AddTransient<IActionRepository, ActionRepository>();
             services.AddControllersWithViews();
         }
 
