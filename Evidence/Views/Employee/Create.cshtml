@@ -1,0 +1,36 @@
+﻿@model Evidence.Models.ViewModels.AddNewEmployeeViewModel
+
+@{
+    ViewData["Title"] = "View";
+}
+
+
+
+<form asp-action="Create">
+    <div class="border p-3">
+        <h4>Pridat zamestnance</h4>
+        <hr />
+
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control"/>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SelectedPosition, "Pozice", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.SelectedPosition, new SelectList(Model.Positions, "Id", "Name"), "Vyberte pozice")
+                @Html.ValidationMessageFor(model => model.SelectedPosition)
+            </div>
+        </div>
+                        
+        <input type="submit" class="btn btn-info w-75" value="create" />
+        <a asp-action="Index" class="btn btn-danger w-75">Zpet</a>
+    </div>
+
+
+</form>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

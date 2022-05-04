@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Evidence.Data;
 
 namespace Evidence.Controllers
 {
@@ -22,12 +23,7 @@ namespace Evidence.Controllers
         {
             return View();
         }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
