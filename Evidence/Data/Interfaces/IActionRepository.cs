@@ -13,5 +13,6 @@ namespace Evidence.Data.Interfaces
         public Task<Action> GetAction(int id);
         public Task<bool> AddAction(ActionAddEditViewModel vm);
         public Task<bool> EditAction(ActionAddEditViewModel vm);
+        public Task DeleteAction(int id);
     }
 }

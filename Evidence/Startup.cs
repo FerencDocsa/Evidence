@@ -32,6 +32,8 @@ namespace Evidence
             services.AddTransient<IEmpolyeeRepository, EmployeeRepository>();
             services.AddTransient<IActionRepository, ActionRepository>();
             services.AddTransient<IReportRepository, ReportRepository>();
+            services.AddTransient<IProjectRepository, ProjectRepository>();
+            services.AddTransient<IPositionRepository, PositionRepository>();
             services.AddControllersWithViews();
         }
 

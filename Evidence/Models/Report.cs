@@ -17,8 +17,5 @@ namespace Evidence.Models
 
         [Display(Name = "Odpracovano")]
         public int SpentTime { get; set; }
-
-        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
-        //public DateTime ActionDate { get; set; }
     }
 }

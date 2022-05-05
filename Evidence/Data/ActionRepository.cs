@@ -36,7 +36,6 @@ namespace Evidence.Data.Interfaces
             return result;
         }
 
-
         public async Task<bool> AddAction(ActionAddEditViewModel vm)
         {
             if (IsHourOverdraft(vm))
@@ -75,6 +74,13 @@ namespace Evidence.Data.Interfaces
             _ctx.Update(actionToUpdate);
             await _ctx.SaveChangesAsync();
             return true;
+        }
+
+        public async Task DeleteAction(int id)
+        {
+            var action = await _ctx.Actions.FindAsync(id);
+            _ctx.Actions.Remove(action);
+            await _ctx.SaveChangesAsync();
         }
 
         private bool IsHourOverdraft(ActionAddEditViewModel vm)

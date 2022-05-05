@@ -30,7 +30,7 @@ namespace Evidence.Controllers
             return View(await _actionRepository.GetActions());
         }
 
-        // GET: Actions/Details/5 ++
+        // GET: Actions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -60,10 +60,9 @@ namespace Evidence.Controllers
             return View(vm);
         }
 
-        //++
+        //POST: Actions/Create/Model
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public async Task<IActionResult> Create([Bind]ActionAddEditViewModel vm)
         {
             if (ModelState.IsValid)
@@ -131,10 +130,8 @@ namespace Evidence.Controllers
                 return NotFound();
             }
 
-            var action = await _ctx.Actions
-                .Include(a => a.EmployeeNavigation)
-                .Include(b => b.ProjectNavigation)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var action = await _actionRepository.GetAction((int)id);
+
             if (action == null)
             {
                 return NotFound();
@@ -148,10 +145,8 @@ namespace Evidence.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var action = await _ctx.Actions.FindAsync(id);
-            _ctx.Actions.Remove(action);
-            await _ctx.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            await _actionRepository.DeleteAction(id);
+            return RedirectToAction("Index");
         }
 
         private bool ActionExists(int id)
