@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,13 +24,13 @@ namespace Evidence.Controllers
             _actionRepository = actionRepository;
         }
 
-        // GET: Actions
+        // GET: Actions ++
         public async Task<IActionResult> Index()
         {
             return View(await _actionRepository.GetActions());
         }
 
-        // GET: Actions/Details/5
+        // GET: Actions/Details/5 ++
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -37,9 +38,8 @@ namespace Evidence.Controllers
                 return NotFound();
             }
 
-            var action = await _ctx.Actions
-                .Include(a => a.EmployeeNavigation)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var action = await _actionRepository.GetAction((int)id);
+
             if (action == null)
             {
                 return NotFound();
@@ -49,96 +49,78 @@ namespace Evidence.Controllers
         }
 
         // GET: Actions/Create
-        public IActionResult Create()
+        // V pripade s kontrolovanim hodin bylo by vhodnejsi napsat JavaScript 
+        public IActionResult Create(string? message)
         {
-            var vm = new ActionAddViewModel();
-            vm.Employees = _ctx.Employees.ToList();
-            vm.Projects = _ctx.Projects.ToList();
-            vm.ActionDate = DateTime.Today;
+            var vm = new ActionAddEditViewModel {Employees = _ctx.Employees.ToList(), Projects = _ctx.Projects.ToList(), ActionDate = DateTime.Today };
+
+            if (!string.IsNullOrEmpty(message))
+                ViewData["message"] = message;
 
             return View(vm);
         }
 
-        // POST: Actions/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //++
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind]ActionAddViewModel vm)
+
+        public async Task<IActionResult> Create([Bind]ActionAddEditViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                var employeePositionCost = _ctx.Employees.Include(c => c.PositionNavigation).FirstOrDefault(x => x.Id == vm.SelectedEmployee).PositionNavigation.Cost;
-
-                var newAction = new Action
+                if (await _actionRepository.AddAction(vm))
                 {
-                    Employee = vm.SelectedEmployee,
-                    ActionDate = vm.ActionDate,
-                    Cost = employeePositionCost * vm.SpentTime,
-                    Project = vm.SelectedProject,
-                    SpentTime = vm.SpentTime
-                };
+                    return RedirectToAction("Index");
+                }
 
-                
-                _ctx.Add(newAction);
-                await _ctx.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Create", new {message = "Překročen povolený počet hodin pro tento den" });
             }
-            //ViewData["Employee"] = new SelectList(_ctx.Employees, "Id", "Name", vm.Employee);
-            return View(vm);
+
+            return RedirectToAction("Index");
         }
 
         // GET: Actions/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, string? message)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var action = await _ctx.Actions.FindAsync(id);
-            if (action == null)
-            {
-                return NotFound();
-            }
-            ViewData["Employee"] = new SelectList(_ctx.Employees, "Id", "Name", action.Employee);
-            return View(action);
+            if (!string.IsNullOrEmpty(message))
+                ViewData["message"] = message;
+
+            var getAction = await _actionRepository.GetAction((int)id);
+
+            var vm = new ActionAddEditViewModel 
+            {   
+                Employees = _ctx.Employees.ToList(),
+                Projects = _ctx.Projects.ToList(),
+                Cost = getAction.Cost,
+                SpentTime = getAction.SpentTime,
+                SelectedEmployee = getAction.EmployeeNavigation.Id,
+                SelectedProject = getAction.ProjectNavigation.Id,
+                ActionDate = getAction.ActionDate
+            };
+
+            return View(vm);
         }
 
         // POST: Actions/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Employee,Project,Cost,ActionDate,SpentTime")] Action action)
+        public async Task<IActionResult> Edit([Bind]ActionAddEditViewModel vm)
         {
-            if (id != action.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
+                if (await _actionRepository.EditAction(vm))
                 {
-                    _ctx.Update(action);
-                    await _ctx.SaveChangesAsync();
+                    return RedirectToAction("Edit", new {vm.Id });
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ActionExists(action.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction("Edit", new {vm.Id, message = "Překročen povolený počet hodin pro tento den" });
             }
-            ViewData["Employee"] = new SelectList(_ctx.Employees, "Id", "Name", action.Employee);
-            return View(action);
+            return RedirectToAction("Index");
         }
 
         // GET: Actions/Delete/5
@@ -151,6 +133,7 @@ namespace Evidence.Controllers
 
             var action = await _ctx.Actions
                 .Include(a => a.EmployeeNavigation)
+                .Include(b => b.ProjectNavigation)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (action == null)
             {

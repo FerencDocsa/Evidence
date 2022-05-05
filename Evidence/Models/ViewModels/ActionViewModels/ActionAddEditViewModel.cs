@@ -7,22 +7,24 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Evidence.Models.ViewModels
 {
-    public class ActionAddViewModel
+    public class ActionAddEditViewModel
     {
         public int Id { get; set; }
         [Display(Name = "Zaměstnanec")]
+        [Required(ErrorMessage = "Musí se vybrat zaměstnanec")]
         public int SelectedEmployee { get; set; }
         public List<Employee> Employees { get; set; }
 
-
         [Display(Name = "Projekt")]
+        [Required(ErrorMessage = "Musí se vybrat projekt")]
         public int SelectedProject { get; set; }
         public List<Project> Projects { get; set; }
 
-        [Display(Name = "Náklad")]
+        [Display(Name = "Náklady (Kč)")]
         public int Cost { get; set; }
 
         [Display(Name = "Datum Činnosti")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime ActionDate { get; set; }
 
         [Display(Name = "Odpracováno hodin")]

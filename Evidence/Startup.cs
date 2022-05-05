@@ -31,6 +31,7 @@ namespace Evidence
                 options.UseSqlServer(Configuration.GetConnectionString("EvidenceDB")));
             services.AddTransient<IEmpolyeeRepository, EmployeeRepository>();
             services.AddTransient<IActionRepository, ActionRepository>();
+            services.AddTransient<IReportRepository, ReportRepository>();
             services.AddControllersWithViews();
         }
 

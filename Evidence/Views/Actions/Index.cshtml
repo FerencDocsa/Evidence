@@ -1,14 +1,14 @@
-﻿@model IEnumerable<Evidence.Models.ViewModels.ActionShowViewModel>
+﻿@model IEnumerable<Evidence.Models.Action>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Seznam vykázaných činností</h1>
+<div style="display: flex; justify-content: space-between;">
+    <h2>Seznam vykázaných činností</h2>
+    <p><a asp-action="Create" class="btn btn-primary">Nová činnost</a></p>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -34,10 +34,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Employee)
+                @Html.DisplayFor(modelItem => item.EmployeeNavigation.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Project)
+                @Html.DisplayFor(modelItem => item.ProjectNavigation.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ActionDate)
@@ -49,9 +49,9 @@
                 @Html.DisplayFor(modelItem => item.Cost)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Editovat</a> 
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Detaily</a> 
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Vymazat</a>
             </td>
         </tr>
 }

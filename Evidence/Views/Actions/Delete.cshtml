@@ -4,48 +4,52 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
-
-<h3>Are you sure you want to delete this?</h3>
+<h3>Opravdu chcete odmazat tento záznam?</h3>
 <div>
-    <h4>Action</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Project)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Project)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Cost)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cost)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ActionDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ActionDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SpentTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SpentTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EmployeeNavigation)
+            Zaměstnanec
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.EmployeeNavigation.Name)
-        </dd class>
+        </dd>
+
+        <dt class="col-sm-2">
+            Projekt
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProjectNavigation.Name)
+        </dd>
+        
+        <dt class="col-sm-2">
+            Datum Činnosti
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ActionDate)
+        </dd>
+
+        <dt class="col-sm-2">
+            Odpracováno hodin
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SpentTime)
+        </dd>
+
+        <dt class="col-sm-2">
+            Náklady (Kč)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cost)
+        </dd>
+
+
+
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Vymazat" class="btn btn-danger" /> |
+        <a class="btn btn-secondary" asp-action="Index">Zpět na seznam</a>
     </form>
 </div>
