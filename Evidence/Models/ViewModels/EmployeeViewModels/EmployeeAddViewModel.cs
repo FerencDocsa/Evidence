@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Evidence.Models.ViewModels
 {
-    public class AddNewEmployeeViewModel
+    public class EmployeeAddViewModel
     {
         [Required]
         [Display(Name = "Jmeno")]

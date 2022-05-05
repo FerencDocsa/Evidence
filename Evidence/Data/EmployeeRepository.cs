@@ -22,7 +22,7 @@ namespace Evidence.Data
             return _ctx.Employees.Include(c => c.PositionNavigation);
         }
 
-        public void CreateEmployee(AddNewEmployeeViewModel vm)
+        public void CreateEmployee(EmployeeAddViewModel vm)
         {
             var newEmployee = new Employee
             {

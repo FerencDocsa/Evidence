@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Evidence.Models.Project>
+
+
+<div style="display: flex; justify-content: space-between;">
+    <h2>Seznam projektů</h2>
+    <p><a asp-action="Create" class="btn btn-primary">Přidat</a></p>
+</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            Název projektu
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

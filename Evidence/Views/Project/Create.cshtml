@@ -1,37 +1,23 @@
-﻿@model Evidence.Models.ViewModels.EmployeeAddViewModel
-
+﻿@model Evidence.Models.Project
 
 <div class="row  p-3">
     <div class="col-md-4 border centerForm">
-        <h1>Nový zaměstnanec</h1>
+        <h1>Nový projekt</h1>
         <hr />
         <form asp-action="Create">
-            
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label">Název projektu</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-
-            <div class="form-group">
-                <label asp-for="SelectedPosition" class="control-label"></label>
-                @Html.DropDownListFor(model => model.SelectedPosition, new SelectList(Model.Positions, "Id", "Name"), "Vyberte pozice", new { @class = "form-control" })
-                <span asp-validation-for="SelectedPosition" class="text-danger"></span>
-
-            </div>
-        
             <div class="form-group">
                 <input type="submit" value="Přidat" class="btn btn-block btn-primary" />
                 <a class="btn btn-block btn-secondary" asp-action="Index">Zpět na seznam</a>
 
             </div>
         </form>
-
-        <div>
-        </div>
     </div>
 </div>
-
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

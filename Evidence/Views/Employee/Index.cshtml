@@ -1,48 +1,36 @@
 ﻿@model IEnumerable<Evidence.Models.Employee>
 
-@{
-    ViewData["Title"] = "Seznam";
-}
 
-<div class="container p-3">
-    <div class="row pt-4">
-        <div class="col-6">
-            <h2 class="text-primary">Seznam zamestnancu</h2>
-        </div>
-        <div class="col-6 text-right">
-            <a asp-controller="Employee" asp-action="Create" class="btn btn-primary">Pridat zamestnance</a>
-        </div>
-    </div>
-    <br />
-
-    @if(Model.Any())
-    {
-        <table class="table table-bordered table-striped" style="width:100%">
-            <thead>
-            <tr>
-                <th>
-                    Jmeno
-                </th>
-                <th>
-                    Pozice
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach(var item in Model)
-            {
-                <tr>
-                    <td width="50%">@item.Name</td>
-                    <td width="50%">@item.PositionNavigation.Name</td>
-                </tr>
-            }
-            </tbody>
-        </table> 
-    }
-    else
-    {
-        <p>Zatim nejsou zadne zamestnance</p>
-    }
+<div style="display: flex; justify-content: space-between;">
+    <h2>Seznam zaměstnanců</h2>
+    <p><a asp-action="Create" class="btn btn-primary">Přidat</a></p>
 
 </div>
 
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Jmeno
+            </th>
+
+            <th>
+                Pozice
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PositionNavigation.Name)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
