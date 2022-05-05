@@ -1,0 +1,54 @@
+﻿@model Evidence.Models.ViewModels.ReportsViewModel
+
+
+<h2>Report</h2>
+
+<table class="table" style="margin-bottom: 15px;">
+    <thead>
+        <tr>
+            <th>
+                Projekt
+            </th>
+            <th>
+                Odpracováno hodin
+            </th>
+            <th>
+                Náklady (Kč)
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Reports)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjectName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SpentTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Costs)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div style="display: flex;">
+    <form method="post">
+        <h5>Sortovat podle datumu</h5>
+
+        <label for="dateFrom">Datum Od</label>
+        <input id="dateFrom" name="dateFrom" type="date" />
+        <label for="dateTo">Datum Do</label>
+        <input id="dateTo" name="dateTo" type="date" />
+
+        <button type="submit" class="btn btn-info">Sortovat</button>
+    </form>
+
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
